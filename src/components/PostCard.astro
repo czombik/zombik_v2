@@ -1,5 +1,4 @@
 ---
-import { formatDate } from '../lib/format';
 import type { PostCardData, WritingCardData } from '../lib/sanity.types';
 import SanityImage from './SanityImage.astro';
 import TagList from './TagList.astro';
@@ -45,10 +44,6 @@ const href = `${hrefPrefix}/${post.slug}`;
   )}
 
   <div class="post-card-content">
-    <p class="post-card-meta">
-      <span>{formatDate(post.publishedAt)}</span>
-    </p>
-
     <h3 class="post-card-title">
       <a href={href}>{post.title}</a>
     </h3>

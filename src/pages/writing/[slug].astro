@@ -33,8 +33,9 @@ if (!post) {
         <span>{formatDate(post.publishedAt)}</span>
       </p>
 
-      <h1>{post.title}</h1>
-      <p class="post-excerpt">{post.excerpt}</p>
+      <div class="post-title-block">
+        <h1>{post.title}</h1>
+      </div>
       <TagList tags={post.tags} hrefBase="/writing" />
     </header>
 

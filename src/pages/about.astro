@@ -5,15 +5,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAboutPageData, getAuthorData } from '../lib/content';
 
 const [aboutPage, author] = await Promise.all([getAboutPageData(), getAuthorData()]);
+const blueskyUrl = 'https://bsky.app/profile/chriszombik.com';
+const socialLinks = [...(author.socialLinks ?? [])];
+
+if (!socialLinks.some((link) => link.url === blueskyUrl)) {
+  socialLinks.push({ label: 'Bluesky', url: blueskyUrl });
+}
 ---
 
 <BaseLayout title="About" description="About Chris Zombik.">
   <article class="about-page reveal">
     <header class="about-header">
       <div>
-        <p class="home-eyebrow">About</p>
         <h1>{aboutPage.title}</h1>
-        <p class="about-role">{author.roleLine}</p>
       </div>
 
       <SanityImage
@@ -26,11 +30,11 @@ const [aboutPage, author] = await Promise.all([getAboutPageData(), getAuthorData
 
     <RichTextRenderer value={aboutPage.body} class="about-rich-text" footnotePrefix="about" />
 
-    {author.socialLinks && author.socialLinks.length > 0 && (
+    {socialLinks.length > 0 && (
       <footer class="about-links">
         <h2>Elsewhere</h2>
         <ul>
-          {author.socialLinks.map((link) => (
+          {socialLinks.map((link) => (
             <li>
               <a href={link.url} target="_blank" rel="noreferrer noopener">
                 {link.label}

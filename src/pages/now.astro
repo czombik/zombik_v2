@@ -4,26 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getNowPageData } from '../lib/content';
 
 const nowPage = await getNowPageData();
-
-const formattedLastUpdated = nowPage.lastUpdated
-  ? new Date(`${nowPage.lastUpdated}T00:00:00`).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  : null;
 ---
 
 <BaseLayout title="Now" description="What Chris Zombik is focused on now.">
   <article class="now-page reveal">
     <header class="now-header">
-      <p class="home-eyebrow">Now</p>
       <h1>{nowPage.title}</h1>
-      <p class="now-subheading">
-        A snapshot of current focus. In the spirit of a
-        <a href="https://sive.rs/nowff" target="_blank" rel="noreferrer noopener"> now page </a>.
-      </p>
-      {formattedLastUpdated && <p class="now-updated">Last updated {formattedLastUpdated}</p>}
     </header>
 
     <section class="now-content">

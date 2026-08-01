@@ -1,13 +1,11 @@
 ---
 import PostCard from "../components/PostCard.astro";
-import SanityImage from "../components/SanityImage.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   getHomePageData,
   getPostIndexData,
   getWritingIndexData,
 } from "../lib/content";
-import { hasImageAsset } from "../lib/sanity.client";
 
 const [homePage, posts, writingEntries] = await Promise.all([
   getHomePageData(),
@@ -20,7 +18,6 @@ const featuredPosts =
     ? homePage.featuredPosts
     : posts.slice(0, 3);
 const featuredWriting = writingEntries.slice(0, 2);
-const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
 ---
 
 <BaseLayout
@@ -29,24 +26,7 @@ const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
   socialImage={homePage.heroImage}
   socialImageAlt={homePage.heroImage?.alt ?? "Chris Zombik homepage hero image"}
 >
-  <section class:list={["home-hero", "reveal", { "home-hero-has-image": hasHomeHeroImage }]}>
-    {
-      hasHomeHeroImage && (
-        <>
-          <div class="home-hero-media" aria-hidden="true">
-            <SanityImage
-              image={homePage.heroImage}
-              alt=""
-              class="home-hero-image"
-              sizes="(max-width: 1200px) 100vw, 1200px"
-              loading="eager"
-            />
-          </div>
-          <div class="home-hero-overlay" aria-hidden="true"></div>
-        </>
-      )
-    }
-    <p class="home-eyebrow">chriszombik.com</p>
+  <section class="home-hero reveal">
     <h1>{homePage.heroHeading}</h1>
     <p class="home-subheading">{homePage.heroSubheading}</p>
 
@@ -58,29 +38,9 @@ const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
     /> -->
   </section>
 
-  <section class="working-on reveal" style="--reveal-delay: 80ms;">
-    <div class="section-heading">
-      <h2>What I&apos;m working on</h2>
-    </div>
-
-    <div class="working-on-grid">
-      <article class="working-on-card">
-        <p class="home-eyebrow">Current Project</p>
-        <h3>The novel</h3>
-        <p>{homePage.novelCardCopy}</p>
-      </article>
-
-      <article class="working-on-card">
-        <p class="home-eyebrow">Current Project</p>
-        <h3>The memoir</h3>
-        <p>{homePage.memoirCardCopy}</p>
-      </article>
-    </div>
-  </section>
-
   <section class="featured-writing reveal" style="--reveal-delay: 120ms;">
     <div class="section-heading">
-      <h2>Featured Posts</h2>
+      <h1>Featured Posts</h1>
       <a href="/posts" class="section-link">View all posts</a>
     </div>
 
@@ -90,7 +50,12 @@ const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
       ) : (
         <div class="post-grid">
           {featuredPosts.map((post) => (
-            <PostCard post={post} hrefPrefix="/posts" />
+            <PostCard
+              post={post}
+              hrefPrefix="/posts"
+              showHeroImage={false}
+              showExcerpt={false}
+            />
           ))}
         </div>
       )
@@ -101,7 +66,7 @@ const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
     featuredWriting.length > 0 && (
       <section class="featured-writing reveal" style="--reveal-delay: 200ms;">
         <div class="section-heading">
-          <h2>Latest Writing</h2>
+          <h1>Latest Writing</h1>
           <a href="/writing" class="section-link">
             View all writing
           </a>
@@ -114,6 +79,7 @@ const hasHomeHeroImage = hasImageAsset(homePage.heroImage);
               hrefPrefix="/writing"
               showHeroImage={false}
               showTags={false}
+              showExcerpt={false}
             />
           ))}
         </div>

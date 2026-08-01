@@ -25,11 +25,7 @@ const tags = Array.from(tagsBySlug.values()).sort((a, b) => a.title.localeCompar
 <BaseLayout title="Writing" description="Short stories and long-form writing by Chris Zombik.">
   <section class="writing-page reveal">
     <header class="writing-header">
-      <p class="home-eyebrow">Writing</p>
-      <h1>Short stories and long-form work.</h1>
-      <p>
-        A chronological archive of fiction and longer pieces.
-      </p>
+      <h1>Short stories and long-form work</h1>
     </header>
 
     {tags.length > 0 && (
@@ -44,7 +40,6 @@ const tags = Array.from(tagsBySlug.values()).sort((a, b) => a.title.localeCompar
     )}
 
     <section id="all-writing" class="writing-group">
-      <h2>All Writing</h2>
       {posts.length === 0 ? (
         <p>No writing published yet.</p>
       ) : (
