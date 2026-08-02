@@ -1,10 +1,12 @@
 ---
-import RichTextRenderer from '../components/RichTextRenderer.astro';
-import SanityImage from '../components/SanityImage.astro';
+import { render } from 'astro:content';
+import LocalImage from '../components/LocalImage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getAboutPageData, getAuthorData } from '../lib/content';
+import { getAuthorData, getPageEntry } from '../lib/content';
 
-const [aboutPage, author] = await Promise.all([getAboutPageData(), getAuthorData()]);
+const [aboutPage, author] = await Promise.all([getPageEntry('about'), getAuthorData()]);
+if (aboutPage.data.type !== 'about') throw new Error('About content has the wrong page type.');
+const { Content } = await render(aboutPage);
 const blueskyUrl = 'https://bsky.app/profile/chriszombik.com';
 const socialLinks = [...(author.socialLinks ?? [])];
 
@@ -17,18 +19,18 @@ if (!socialLinks.some((link) => link.url === blueskyUrl)) {
   <article class="about-page reveal">
     <header class="about-header">
       <div>
-        <h1>{aboutPage.title}</h1>
+        <h1>{aboutPage.data.title}</h1>
       </div>
 
-      <SanityImage
+      <LocalImage
         image={author.portrait}
-        alt={author.portrait?.alt ?? author.name}
+        alt={author.portraitAlt ?? author.name}
         class="about-portrait"
         sizes="(max-width: 900px) 92vw, 280px"
       />
     </header>
 
-    <RichTextRenderer value={aboutPage.body} class="about-rich-text" footnotePrefix="about" />
+    <div class="rich-text about-rich-text"><Content /></div>
 
     {socialLinks.length > 0 && (
       <footer class="about-links">

@@ -1,6 +1,6 @@
 ---
-import RichTextRenderer from '../../components/RichTextRenderer.astro';
-import SanityImage from '../../components/SanityImage.astro';
+import { render } from 'astro:content';
+import LocalImage from '../../components/LocalImage.astro';
 import TagList from '../../components/TagList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPostBySlug, getPostSlugs } from '../../lib/content';
@@ -20,13 +20,14 @@ const post = await getPostBySlug(slug);
 if (!post) {
   throw new Error(`Post not found for slug: ${slug}`);
 }
+const { Content } = await render(post.entry);
 ---
 
 <BaseLayout
   title={post.title}
   description={post.excerpt}
   socialImage={post.heroImage}
-  socialImageAlt={post.heroImage?.alt ?? post.title}
+  socialImageAlt={post.heroImageAlt ?? post.title}
 >
   <article class="post-page reveal">
     <header class="post-header">
@@ -39,14 +40,14 @@ if (!post) {
       </div>
       <TagList tags={post.tags} hrefBase="/posts" />
 
-      <SanityImage
+      <LocalImage
         image={post.heroImage}
-        alt={post.heroImage?.alt ?? post.title}
+        alt={post.heroImageAlt ?? post.title}
         class="post-hero"
         loading="eager"
       />
     </header>
 
-    <RichTextRenderer value={post.body} footnotePrefix={`post-${post.slug}`} />
+    <div class="rich-text"><Content /></div>
   </article>
 </BaseLayout>

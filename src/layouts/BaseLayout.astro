@@ -2,15 +2,15 @@
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { getAuthorData, getSiteSettingsData } from "../lib/content";
-import { hasImageAsset, urlForImage } from "../lib/sanity.client";
-import type { SanityImageSource } from "../lib/sanity.types";
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import "../styles/global.css";
 import Analytics from "@vercel/analytics/astro";
 
 interface Props {
   title?: string;
   description?: string;
-  socialImage?: SanityImageSource;
+  socialImage?: ImageMetadata;
   socialImageAlt?: string;
 }
 
@@ -29,14 +29,19 @@ const socialDescription =
   "Writer and educational consultant. Essays, fiction, and notes by Chris Zombik.";
 const siteUrl = Astro.site?.toString() ?? "https://chriszombik.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
-const ogImageSource = hasImageAsset(socialImage) ? socialImage : author.portrait;
-const ogImageUrl = hasImageAsset(ogImageSource)
-  ? urlForImage(ogImageSource).width(1200).height(630).fit("crop").quality(85).url()
+const ogImageSource = socialImage ?? settings.defaultOgImage ?? author.portrait;
+const optimizedOgImage = ogImageSource
+  ? await getImage({ src: ogImageSource, width: 1200, height: 630, fit: "cover", format: "jpg" })
+  : null;
+const ogImageUrl = optimizedOgImage
+  ? new URL(optimizedOgImage.src, siteUrl).toString()
   : null;
 const ogImageAlt = socialImageAlt
   ? socialImageAlt
-  : hasImageAsset(socialImage)
-    ? socialImage.alt ?? `${title ?? siteTitle} preview image`
+    : socialImage
+    ? `${title ?? siteTitle} preview image`
+    : settings.defaultOgImageAlt
+    ? settings.defaultOgImageAlt
     : author.name
       ? `Portrait of ${author.name}`
       : "Portrait of Chris Zombik";
@@ -52,7 +57,7 @@ const ogImageAlt = socialImageAlt
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteTitle} />
-    <meta property="og:title" content={siteTitle} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={socialDescription} />
     <meta property="og:url" content={canonicalUrl} />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
@@ -63,7 +68,7 @@ const ogImageAlt = socialImageAlt
       name="twitter:card"
       content={ogImageUrl ? "summary_large_image" : "summary"}
     />
-    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={socialDescription} />
     {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
     {ogImageUrl && <meta name="twitter:image:alt" content={ogImageAlt} />}

@@ -6,6 +6,7 @@ import {
   getPostIndexData,
   getWritingIndexData,
 } from "../lib/content";
+import type { EntryCardData } from "../lib/content.types";
 
 const [homePage, posts, writingEntries] = await Promise.all([
   getHomePageData(),
@@ -24,18 +25,12 @@ const featuredWriting = writingEntries.slice(0, 2);
   title="Home"
   description="Essays, fiction, and notes by Chris Zombik."
   socialImage={homePage.heroImage}
-  socialImageAlt={homePage.heroImage?.alt ?? "Chris Zombik homepage hero image"}
+  socialImageAlt={homePage.heroImageAlt ?? "Chris Zombik homepage hero image"}
 >
   <section class="home-hero reveal">
     <h1>{homePage.heroHeading}</h1>
     <p class="home-subheading">{homePage.heroSubheading}</p>
 
-    <!-- TODO - if we want to add separate intro for home page, we can use this -->
-    <!-- <RichTextRenderer
-      value={homePage.intro}
-      includeFootnotes={false}
-      class="home-intro"
-    /> -->
   </section>
 
   <section class="featured-writing reveal" style="--reveal-delay: 120ms;">
@@ -49,7 +44,7 @@ const featuredWriting = writingEntries.slice(0, 2);
         <p>No posts published yet.</p>
       ) : (
         <div class="post-grid">
-          {featuredPosts.map((post) => (
+          {featuredPosts.map((post: EntryCardData) => (
             <PostCard
               post={post}
               hrefPrefix="/posts"

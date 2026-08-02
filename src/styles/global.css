@@ -98,6 +98,11 @@ p {
   margin: 0;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .site-shell {
   width: min(100% - 2rem, 760px);
   margin-inline: auto;
@@ -742,7 +747,7 @@ p {
 }
 
 .rich-text code,
-.endnotes code {
+.rich-text .footnotes code {
   padding: 0.08rem 0.3rem;
   border: 1px solid var(--code-border);
   border-radius: 2px;
@@ -751,46 +756,45 @@ p {
   font-size: 0.88em;
 }
 
-.footnote-ref {
+.rich-text sup:has([data-footnote-ref]) {
   margin-left: 0.04rem;
   font-size: 0.72em;
   vertical-align: super;
 }
 
-.footnote-ref a,
-.endnote-backlink {
+.rich-text [data-footnote-ref],
+.rich-text [data-footnote-backref] {
   text-decoration: none;
 }
 
-.endnotes {
+.rich-text .footnotes {
   margin-top: 1.2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--line);
 }
 
-.endnotes h2 {
-  margin-bottom: 0.6rem;
-  font-size: 1.3rem;
-}
-
-.endnotes ol {
+.rich-text .footnotes ol {
   display: grid;
   gap: 0.75rem;
   margin: 0;
   padding-left: 1.25rem;
 }
 
-.endnote-item {
-  padding-left: 0.2rem;
-}
-
-.endnote-copy p {
-  display: inline;
-}
-
-.endnote-backlink {
+.rich-text [data-footnote-backref] {
   margin-left: 0.5rem;
   font-family: var(--font-ui);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 680px) {

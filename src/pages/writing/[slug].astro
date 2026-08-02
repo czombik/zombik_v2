@@ -1,5 +1,5 @@
 ---
-import RichTextRenderer from '../../components/RichTextRenderer.astro';
+import { render } from 'astro:content';
 import TagList from '../../components/TagList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getWritingBySlug, getWritingSlugs } from '../../lib/content';
@@ -19,13 +19,14 @@ const post = await getWritingBySlug(slug);
 if (!post) {
   throw new Error(`Writing entry not found for slug: ${slug}`);
 }
+const { Content } = await render(post.entry);
 ---
 
 <BaseLayout
   title={post.title}
   description={post.excerpt}
   socialImage={post.heroImage}
-  socialImageAlt={post.heroImage?.alt ?? post.title}
+  socialImageAlt={post.heroImageAlt ?? post.title}
 >
   <article class="post-page reveal">
     <header class="post-header">
@@ -39,6 +40,6 @@ if (!post) {
       <TagList tags={post.tags} hrefBase="/writing" />
     </header>
 
-    <RichTextRenderer value={post.body} footnotePrefix={`writing-${post.slug}`} />
+    <div class="rich-text"><Content /></div>
   </article>
 </BaseLayout>

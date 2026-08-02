@@ -8,36 +8,18 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "bun test",
-    "import:payload": "bun run scripts/import-payload-to-sanity.ts",
-    "import:payload:dry": "bun run scripts/import-payload-to-sanity.ts --dry-run"
+    "test": "bun test"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/vercel": "^9.0.4",
-    "@portabletext/plugin-markdown-shortcuts": "^5.0.24",
-    "@portabletext/plugin-typography": "^5.0.24",
-    "@portabletext/to-html": "^5.0.1",
-    "@sanity/astro": "^3.2.11",
-    "@sanity/client": "^7.14.1",
-    "@sanity/image-url": "^2.0.3",
-    "@sanity/vision": "^5.9.0",
     "@vercel/analytics": "^1.6.1",
     "astro": "^5.17.2",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-is": "^19.2.0",
-    "resend": "^6.9.2",
-    "sanity": "^5.9.0",
-    "styled-components": "^6.3.9"
+    "resend": "^6.9.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@types/bun": "latest",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@types/react-is": "^19.2.0",
     "typescript": "^5.9.3"
   }
 }

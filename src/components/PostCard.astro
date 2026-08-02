@@ -1,6 +1,6 @@
 ---
-import type { PostCardData, WritingCardData } from '../lib/sanity.types';
-import SanityImage from './SanityImage.astro';
+import type { PostCardData, WritingCardData } from '../lib/content.types';
+import LocalImage from './LocalImage.astro';
 import TagList from './TagList.astro';
 
 interface Props {
@@ -34,9 +34,9 @@ const href = `${hrefPrefix}/${post.slug}`;
 >
   {showHeroImage && (
     <a class="post-card-image-wrap" href={href}>
-      <SanityImage
+      <LocalImage
         image={post.heroImage}
-        alt={post.heroImage?.alt ?? post.title}
+        alt={post.heroImageAlt ?? post.title}
         class="post-card-image"
         sizes="(max-width: 980px) 92vw, 520px"
       />

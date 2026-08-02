@@ -1,19 +1,21 @@
 ---
-import RichTextRenderer from '../components/RichTextRenderer.astro';
+import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getNowPageData } from '../lib/content';
+import { getPageEntry } from '../lib/content';
 
-const nowPage = await getNowPageData();
+const nowPage = await getPageEntry('now');
+if (nowPage.data.type !== 'now') throw new Error('Now content has the wrong page type.');
+const { Content } = await render(nowPage);
 ---
 
 <BaseLayout title="Now" description="What Chris Zombik is focused on now.">
   <article class="now-page reveal">
     <header class="now-header">
-      <h1>{nowPage.title}</h1>
+      <h1>{nowPage.data.title}</h1>
     </header>
 
     <section class="now-content">
-      <RichTextRenderer value={nowPage.body} footnotePrefix="now" />
+      <div class="rich-text"><Content /></div>
     </section>
   </article>
 </BaseLayout>
